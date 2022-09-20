@@ -1,0 +1,65 @@
+<%- include('templates/head', {tituloWeb: 'Fotos'}); %>
+<div class=" container row mt-5">
+    <div class="col-4">
+        
+        <div class="card">
+            <div class="text-center mt-3">
+                <h2 class="text-primary">
+                    Sube una foto
+                </h2>
+            </div>
+            <div class="card-body">
+                <form action="/images/add" method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="text" name="title"  class="form-control" placeholder="Nombre de la imagen" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea name="description"  class="form-control" placeholder="Descripción" required></textarea>
+                    </div>
+                    <div class="input-group">
+                        <div class="custom-file w-100">
+                            <input type="file" name="image"  class="form-control" id="inputGroupFile01" required>
+                            <label for="inputGroupFile01" class="form-label">Sube un archivo</label>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-3">Sube tu foto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+<div class="col-8 card-body bg-white">
+    <div class="text-center">
+        <h2 class="text-primary">
+        Fotos subidas
+        </h2>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Descripción</th>
+                <th>Operaciones</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <% if (arrayImagen.length > 0 ) { %>
+                <% arrayImagen.forEach(imagen => { %>
+            <tr>
+                <td><%= imagen.title  %></td>
+                <td><%= imagen.description  %></td>
+                <td>
+                    <a target="_blank" class="btn btn-primary" href="<%= imagen.imageURL  %>">Ver</a>
+                </td>
+                
+            </tr>
+                 <% }) %>
+             <% } %>
+        </tbody>
+    </table>
+       
+</div>
+</div>
+</body>
+</html>

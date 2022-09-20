@@ -1,0 +1,75 @@
+<%- include('templates/head', {tituloWeb: 'Fotos'}); %>
+
+<div class="container">
+
+  <a
+       class="btn btn-success btn-block my-4"
+       href="/images/add"
+  >
+        Subir Nueva Foto
+</a>
+
+            <div class="row">
+            <% if (arrayImagen.length > 0 ) { %>
+                <% arrayImagen.forEach(imagen => { %>
+                    
+                  <div class="col-2 col-md-4 mt-2 border-1 border-warning card bg-light ">
+
+                  <div class="card-body  text-center">
+                    
+                        
+                        
+                        <h5 class="mt-2">
+                          <%= imagen.title  %>
+                          </h5>
+                        
+                        <h6 class="mt-2">
+                          <img class="w-100" src="<%= imagen.imageURL  %>" alt="Foto">
+                        </h6>
+                        <h5 class="mt-2">
+                          <%= imagen.description  %>
+                          </h5>
+                      
+                        
+                          <a 
+                          class=" btn btn-warning"
+                          href="/<%= imagen.id  %>">
+
+                          Editar / Eliminar
+                          </a>  
+                    </div>
+                    </div>       
+                           
+                      
+                     <% }) %>
+               <% } %>
+          
+        </tbody>
+      </table>
+    
+</div>
+
+<script>
+    
+  const btnEliminar = document.querySelector('.btn-danger')
+    btnEliminar.addEventListener('click', async() => {
+      console.log(btnEliminar.dataset.id)  
+      try {
+          const data = await fetch(`/${btnEliminar.dataset.id}`, {
+            method: 'delete'
+          })
+          const res = await data.json()
+          console.log(res)
+          if(res.estado){
+              window.location.href = '/'
+          }else{
+              console.log(res)
+          }
+      } catch (error) {
+          console.log(error)
+      }
+    });
+  </script>
+
+</body>
+</html>

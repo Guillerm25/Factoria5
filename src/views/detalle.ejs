@@ -1,0 +1,126 @@
+<%- include('templates/head', {tituloWeb: 'detalle de imagen'}); %>
+
+<div class="container">
+
+    <h1 class="text-white">Editar imagen</h1>
+    
+    <% if (error) { %>
+        <%= mensaje %> 
+        <a 
+            href="/"
+            class="btn btn-primary btn-block my-2"
+        >
+            Volver
+        </a>
+    <% } %>
+
+    <% if (!error) { %>
+
+        <form class="text-white" id="editar" data-id="<%= imagen._id %>">
+            <input 
+            type="text"
+            value="<%= imagen._id %>"
+            class="form-control my-2"
+            name="id"
+            id="idInput"
+            required
+            readonly
+        >
+        <h6>Nombre</h6>
+
+            <input 
+                type="text"
+                value="<%= imagen.title %>"
+                class="form-control my-2"
+                name="nombre"
+                id="titleInput"
+                required
+            >
+            <h6>Descripción</h6>
+            <input 
+                type="text"
+                value="<%= imagen.description %>"
+                class="form-control my-2"
+                name="descripcion"
+                id="descriptionInput"
+                required
+            >
+            <h6>Modifica tu foto introduciendo una nueva URL</h6>
+            <input 
+                type="text"
+                value="<%= imagen.imageURL %>"
+                class="form-control my-2"
+                name="foto"
+                id="imageURLInput"
+                required
+            >
+           
+            <button
+                class="btn btn-warning"
+                type="submit"
+            >
+                Editar
+            </button>
+        </form>
+        <button
+            class="btn btn-danger mt-2"
+            data-id="<%= imagen.id %>"
+        >
+            Eliminar
+        </button>
+    <% } %>
+   
+
+
+<script>
+    //ELIMINAR SCRIPT
+    const btnEliminar = document.querySelector('.btn-danger')
+      btnEliminar.addEventListener('click', async() => {
+        console.log(btnEliminar.dataset.id)  
+        try {
+            const data = await fetch(`/${btnEliminar.dataset.id}`, {
+              method: 'delete'
+            })
+            const res = await data.json()
+            console.log(res)
+            if(res.estado){
+                window.location.href = '/'
+            }else{
+                console.log(res)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+      })
+
+      //Editar documento SRCIPT 
+
+    const formEditar = document.querySelector('#editar');
+
+      formEditar.addEventListener('submit', async(e) => {
+          e.preventDefault()
+          const title = document.querySelector('#titleInput').value
+          const description = document.querySelector('#descriptionInput').value
+          const imageURL = document.querySelector('#imageURLInput').value
+         
+          const id = formEditar.dataset.id 
+      
+          const data = await fetch(`/${id}`, {
+              method: 'PUT',
+              headers: {
+              'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({title, description, imageURL})
+          })
+      
+          const res = await data.json()
+      
+          if(res.estado){
+              window.location.href = '/'
+          }else{
+              console.log(res)
+          }
+      
+      })
+    
+    </script>
